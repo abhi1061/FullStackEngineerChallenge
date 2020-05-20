@@ -63,7 +63,7 @@ const headCells = [
     },
     { id: 'post', numeric: false, disablePadding: false, label: 'Post' },
     {
-        id: 'updated_at',
+        id: 'updatedAt',
         numeric: false,
         disablePadding: false,
         label: 'Modified At',
@@ -220,7 +220,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-    const { data, user, setEmployee, setShowEmployeeModal, setEditMode } = props;
+    const {
+        data,
+        user,
+        setEmployee,
+        setShowEmployeeModal,
+        setEditMode,
+    } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('updatedAt');
@@ -278,7 +284,7 @@ export default function EnhancedTable(props) {
         setEmployee(row);
         setShowEmployeeModal(true);
         setEditMode(true);
-    }
+    };
 
     const emptyRows =
         rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -363,7 +369,7 @@ export default function EnhancedTable(props) {
                                                 <TableCell>
                                                     <IconButton
                                                         onClick={() => {
-                                                            handleEdit(row)
+                                                            handleEdit(row);
                                                         }}
                                                     >
                                                         <EditIcon color="primary" />

@@ -13,3 +13,15 @@ export const createEmployee = async (data) => {
         return res.data;
     }
 };
+
+export const editEmployee = async (id, { name, email, department, post }) => {
+    const res = await axios.put(`/employee/${id}`, {
+        name,
+        email,
+        department,
+        post,
+    });
+    if (res.status === 200) {
+        return res.data;
+    }
+};

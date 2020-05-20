@@ -15,6 +15,8 @@ export default function FormDialog(props) {
         setEmployee,
         editMode,
         setEditMode,
+        createNewEmployee,
+        editExistingEmployee,
     } = props;
 
     const handleClose = () => {
@@ -82,7 +84,12 @@ export default function FormDialog(props) {
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button
+                    onClick={
+                        editMode ? editExistingEmployee : createNewEmployee
+                    }
+                    color="primary"
+                >
                     {editMode ? 'Edit' : 'Add'}
                 </Button>
             </DialogActions>

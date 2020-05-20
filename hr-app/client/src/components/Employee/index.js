@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
 
 import './employee.css';
 import AddEmployeeButton from './AddEmployeeButton';
 import EmployeeModal from './EmployeeModal';
 import EmployeeTable from './EmployeeTable';
-import { listEmplyees, createEmployee } from '../../actions';
+import { listEmplyees, createEmployee, editEmployee } from '../../actions';
 
 export default function EmployeePage(props) {
     const { user } = props;
@@ -19,6 +20,22 @@ export default function EmployeePage(props) {
         }
         fetchEmployees();
     }, []);
+
+    const createNewEmployee = async () => {
+        const response = await createEmployee(employee);
+        setEmployees((previousState) => [...previousState, response]);
+        setShowEmployeeModal(false);
+    };
+
+    const editExistingEmployee = async () => {
+        const newEmployees = [...employees];
+        const response = await editEmployee(employee._id, employee);
+        const index = _.findIndex(employees, ['_id', employee._id]);
+        newEmployees[index] = response;
+        setEmployees(newEmployees);
+        setShowEmployeeModal(false);
+    };
+
     return (
         <div className="employee-container">
             {user.role === 'admin' ? (
@@ -43,6 +60,8 @@ export default function EmployeePage(props) {
                 createEmployee={createEmployee}
                 editMode={editMode}
                 setEditMode={setEditMode}
+                createNewEmployee={createNewEmployee}
+                editExistingEmployee={editExistingEmployee}
             />
         </div>
     );
