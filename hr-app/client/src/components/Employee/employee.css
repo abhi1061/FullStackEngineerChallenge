@@ -1,0 +1,11 @@
+.employee-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.add-emplyee-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}

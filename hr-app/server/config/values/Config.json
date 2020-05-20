@@ -1,0 +1,8 @@
+{
+    "config": {
+        "serverSettings": {
+            "port": 8080,
+            "dbConnectString": "mongodb://mongo:27017/mongo-test"
+        }
+    }
+}

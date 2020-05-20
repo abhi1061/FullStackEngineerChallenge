@@ -1,0 +1,24 @@
+{
+  "name": "hr-app",
+  "version": "1.0.0",
+  "description": "Employee review and management application",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Abhijit Majumder",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.15",
+    "uuid": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
