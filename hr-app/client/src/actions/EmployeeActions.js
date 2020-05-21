@@ -15,26 +15,35 @@ export const createEmployee = async (data) => {
 };
 
 export const editEmployee = async (id, { name, email, department, post }) => {
-    await axios.put(`/employee/${id}`, {
+    const res = await axios.put(`/employee/${id}`, {
         name,
         email,
         department,
         post,
     });
+    if (res.status === 204) {
+        return true;
+    }
 };
 
 export const updateUser = async (
     id,
     { email, password, role, accountType },
 ) => {
-    await axios.put(`/user/${id}`, {
+    const res = await axios.put(`/user/${id}`, {
         email,
         password,
         role,
         accountType,
     });
+    if (res.status === 204) {
+        return true;
+    }
 };
 
 export const deleteEmployee = async (id) => {
-    await axios.delete(`/employee/${id}`);
+    const res = await axios.delete(`/employee/${id}`);
+    if (res.status === 204) {
+        return true;
+    }
 };

@@ -34,20 +34,24 @@ export default function EmployeePage(props) {
     };
 
     const editExistingEmployee = async () => {
-        await editEmployee(employee._id, employee);
-        const newEmployees = [...employees];
-        const index = _.findIndex(employees, ['_id', employee._id]);
-        newEmployees[index] = employee;
-        setEmployees(newEmployees);
-        handleClose();
+        const response = await editEmployee(employee._id, employee);
+        if (response) {
+            const newEmployees = [...employees];
+            const index = _.findIndex(employees, ['_id', employee._id]);
+            newEmployees[index] = employee;
+            setEmployees(newEmployees);
+            handleClose();
+        }
     };
 
     const deleteExistingEmployee = async (id) => {
-        await deleteEmployee(id);
-        const index = _.findIndex(employees, ['_id', id]);
-        const newEmployees = [...employees];
-        newEmployees.splice(index, 1);
-        setEmployees(newEmployees);
+        const response = await deleteEmployee(id);
+        if (response) {
+            const index = _.findIndex(employees, ['_id', id]);
+            const newEmployees = [...employees];
+            newEmployees.splice(index, 1);
+            setEmployees(newEmployees);
+        }
     };
 
     const handleClose = () => {
@@ -64,11 +68,13 @@ export default function EmployeePage(props) {
                 : selectedUser.role === 'reviewer'
                 ? 'employee'
                 : selectedUser.role;
-        await updateUser(selectedUser._id, selectedUser);
-        const index = _.findIndex(employees, ['_id', selectedEmployee._id]);
-        const newEmployees = [...employees];
-        newEmployees[index] = selectedEmployee;
-        setEmployees(newEmployees);
+        const response = await updateUser(selectedUser._id, selectedUser);
+        if (response) {
+            const index = _.findIndex(employees, ['_id', selectedEmployee._id]);
+            const newEmployees = [...employees];
+            newEmployees[index] = selectedEmployee;
+            setEmployees(newEmployees);
+        }
     };
 
     return (

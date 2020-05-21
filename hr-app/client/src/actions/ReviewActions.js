@@ -18,7 +18,7 @@ export const updateReview = async (
         dependibility,
     },
 ) => {
-    await axios.put(`/review/${id}`, {
+    const res = await axios.put(`/review/${id}`, {
         jobKnowledge,
         workQuality,
         attendance,
@@ -26,4 +26,7 @@ export const updateReview = async (
         communication,
         dependibility,
     });
+    if (res.status === 204) {
+        return true;
+    }
 };

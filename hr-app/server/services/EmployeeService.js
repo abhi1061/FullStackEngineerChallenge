@@ -99,7 +99,7 @@ const updateEmployee = async (request) => {
         employee.post = request.body.post
         employee.phoneNumber = request.body.phoneNumber
         employee.updatedAt = Date.now()
-        await employee.save()
+        return await employee.save()
     } catch (error) {
         return {
             error: error,

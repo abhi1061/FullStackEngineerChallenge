@@ -26,12 +26,14 @@ export default function Review(props) {
     };
 
     const reviewEmployee = async () => {
-        await updateReview(review._id, review);
-        const newReviews = [...reviews];
-        const index = _.findIndex(reviews, ['_id', review._id]);
-        newReviews[index] = review;
-        setReviews(newReviews);
-        handleClose();
+        const response = await updateReview(review._id, review);
+        if (response) {
+            const newReviews = [...reviews];
+            const index = _.findIndex(reviews, ['_id', review._id]);
+            newReviews[index] = review;
+            setReviews(newReviews);
+            handleClose();
+        }
     };
 
     return (
