@@ -48,12 +48,19 @@ const useStyles = makeStyles((theme) => ({
     tabs: {
         flexGrow: 1,
     },
+    notPermitted: {
+        display: 'flex',
+        height: '70vh',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }));
 
 export default function HomeTabs(props) {
     const { user, logout } = props;
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(user.role === 'admin' ? 0 : 1);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -70,9 +77,20 @@ export default function HomeTabs(props) {
                         aria-label="simple tabs example"
                         edge="start"
                     >
-                        <Tab label="Employee" {...a11yProps(0)} />
+                        <Tab
+                            disabled={user.role !== 'admin'}
+                            label="Employee"
+                            {...a11yProps(0)}
+                        />
 
-                        <Tab label="Review" {...a11yProps(1)} />
+                        <Tab
+                            disabled={
+                                user.role !== 'admin' &&
+                                user.role !== 'reviewer'
+                            }
+                            label="Review"
+                            {...a11yProps(1)}
+                        />
                     </Tabs>
                     <span>{user.email}</span>
                     <IconButton onClick={() => logout()}>
@@ -80,12 +98,20 @@ export default function HomeTabs(props) {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                <EmployeePage user={user} />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <ReviewPage user={user} />
-            </TabPanel>
+            {user.role === 'admin' ? (
+                <TabPanel value={value} index={0}>
+                    <EmployeePage user={user} />
+                </TabPanel>
+            ) : null}
+            {user.role === 'admin' || user.role === 'reviewer' ? (
+                <TabPanel value={value} index={1}>
+                    <ReviewPage user={user} />
+                </TabPanel>
+            ) : (
+                <div className={classes.notPermitted}>
+                    <span>You don't have permission to this application</span>
+                </div>
+            )}
         </div>
     );
 }

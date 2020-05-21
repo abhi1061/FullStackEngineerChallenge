@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/EditOutlined';
+import EditIcon from '@material-ui/icons/RateReview';
 
 import { getComparator, stableSort } from '../TableHelper';
 
