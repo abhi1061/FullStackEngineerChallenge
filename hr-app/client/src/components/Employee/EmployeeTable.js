@@ -122,6 +122,7 @@ export default function EnhancedTable(props) {
         setShowEmployeeModal,
         setEditMode,
         deleteExistingEmployee,
+        makeReviewer,
     } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
@@ -222,10 +223,18 @@ export default function EnhancedTable(props) {
                                                 <TableCell>
                                                     <IconButton
                                                         onClick={() =>
-                                                            console.log('asd')
+                                                            makeReviewer(row)
                                                         }
                                                     >
-                                                        <SupervisorAccountIcon color="primary" />
+                                                        <SupervisorAccountIcon
+                                                            color={
+                                                                row.user
+                                                                    .role ===
+                                                                'reviewer'
+                                                                    ? 'primary'
+                                                                    : 'default'
+                                                            }
+                                                        />
                                                     </IconButton>
                                                 </TableCell>
                                             ) : null}

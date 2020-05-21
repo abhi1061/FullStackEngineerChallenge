@@ -37,4 +37,18 @@ userRouter.post('/login', validate(requestSchema.LOGIN), (req, res) => {
         })
 })
 
+userRouter.put('/:id', validate(requestSchema.UPDATE_USER), (req, res) => {
+    userService
+        .put(req)
+        .then((result) => {
+            if (result.error) {
+                return sendError(res, result.status, result.error)
+            }
+            sendResponse(res, 204, {})
+        })
+        .catch((error) => {
+            reportInternalError(res, 'Error updating user', error)
+        })
+})
+
 module.exports = userRouter

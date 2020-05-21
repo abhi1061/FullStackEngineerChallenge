@@ -32,6 +32,13 @@ const requestSchema = {
         email: Joi.string().email().required(),
         password: Joi.string().required(),
     }),
+    UPDATE_USER: Joi.object().keys({
+        id: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+        role: Joi.string().required(),
+        accountType: Joi.string().required(),
+    }),
     LOGIN: Joi.object().keys({
         email: Joi.string().email().required(),
         password: Joi.string().required(),

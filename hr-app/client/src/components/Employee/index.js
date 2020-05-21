@@ -10,6 +10,7 @@ import {
     createEmployee,
     editEmployee,
     deleteEmployee,
+    updateUser,
 } from '../../actions';
 
 export default function EmployeePage(props) {
@@ -55,6 +56,21 @@ export default function EmployeePage(props) {
         setEmployee({});
     };
 
+    const makeReviewer = async (selectedEmployee) => {
+        let selectedUser = selectedEmployee.user;
+        selectedUser.role =
+            selectedUser.role === 'employee'
+                ? 'reviewer'
+                : selectedUser.role === 'reviewer'
+                ? 'employee'
+                : selectedUser.role;
+        await updateUser(selectedUser._id, selectedUser);
+        const index = _.findIndex(employees, ['_id', selectedEmployee._id]);
+        const newEmployees = [...employees];
+        newEmployees[index] = selectedEmployee;
+        setEmployees(newEmployees);
+    };
+
     return (
         <div className="employee-container">
             {user.role === 'admin' ? (
@@ -71,6 +87,7 @@ export default function EmployeePage(props) {
                 setShowEmployeeModal={setShowEmployeeModal}
                 setEditMode={setEditMode}
                 deleteExistingEmployee={deleteExistingEmployee}
+                makeReviewer={makeReviewer}
             />
             <EmployeeModal
                 showEmployeeModal={showEmployeeModal}
