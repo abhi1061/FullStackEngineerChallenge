@@ -133,7 +133,6 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -146,7 +145,6 @@ export default function EnhancedTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('department');
-    const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -185,7 +183,6 @@ export default function EnhancedTable(props) {
                     >
                         <EnhancedTableHead
                             classes={classes}
-                            numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
