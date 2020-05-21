@@ -19,6 +19,7 @@ app.listen(config.serverSettings.port, function () {
 app.use('/health', require('./routes/HealthRoute'))
 app.use('/user', require('./routes/UserRoute'))
 app.use('/employee', require('./routes/EmployeeRoute'))
+app.use('/review', require('./routes/ReviewRoute'))
 
 app.use((req, res) => {
     res.status(404).send({

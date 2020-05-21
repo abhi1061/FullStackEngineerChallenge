@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import EmployeePage from '../Employee';
+import ReviewPage from '../Review';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -83,7 +84,7 @@ export default function HomeTabs(props) {
                 <EmployeePage user={user} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Review
+                <ReviewPage user={user} />
             </TabPanel>
         </div>
     );

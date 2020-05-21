@@ -1,5 +1,6 @@
 const Employee = require('../model/Employee')
 const User = require('../model/User')
+const Review = require('../model/Review')
 
 const del = async (request) => {
     return await deleteEmployee(request)
@@ -58,7 +59,23 @@ const createEmployee = async (request) => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
         })
-        return await employee.save()
+
+        await employee.save()
+
+        const review = new Review({
+            employee: employee._id,
+            jobKnowledge: 3,
+            workQuality: 3,
+            attendance: 3,
+            initiative: 3,
+            communication: 3,
+            dependibility: 3,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+        })
+        await review.save()
+
+        return employee
     } catch (error) {
         return {
             error: error,
@@ -81,7 +98,7 @@ const updateEmployee = async (request) => {
         employee.department = request.body.department
         employee.post = request.body.post
         employee.phoneNumber = request.body.phoneNumber
-        updatedAt = Date.now()
+        employee.updatedAt = Date.now()
         await employee.save()
     } catch (error) {
         return {

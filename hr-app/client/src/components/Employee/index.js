@@ -29,7 +29,7 @@ export default function EmployeePage(props) {
     const createNewEmployee = async () => {
         const response = await createEmployee(employee);
         setEmployees((previousState) => [...previousState, response]);
-        setShowEmployeeModal(false);
+        handleClose();
     };
 
     const editExistingEmployee = async () => {
@@ -38,7 +38,7 @@ export default function EmployeePage(props) {
         const index = _.findIndex(employees, ['_id', employee._id]);
         newEmployees[index] = employee;
         setEmployees(newEmployees);
-        setShowEmployeeModal(false);
+        handleClose();
     };
 
     const deleteExistingEmployee = async (id) => {
@@ -47,6 +47,12 @@ export default function EmployeePage(props) {
         const newEmployees = [...employees];
         newEmployees.splice(index, 1);
         setEmployees(newEmployees);
+    };
+
+    const handleClose = () => {
+        setEditMode(false);
+        setShowEmployeeModal(false);
+        setEmployee({});
     };
 
     return (
@@ -76,6 +82,7 @@ export default function EmployeePage(props) {
                 setEditMode={setEditMode}
                 createNewEmployee={createNewEmployee}
                 editExistingEmployee={editExistingEmployee}
+                handleClose={handleClose}
             />
         </div>
     );

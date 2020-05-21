@@ -11,10 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import moment from 'moment';
 import EditIcon from '@material-ui/icons/EditOutlined';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccountOutlined';
 
 import { getComparator, stableSort } from '../TableHelper';
 
@@ -49,7 +46,6 @@ const headCells = [
         disablePadding: true,
         label: 'Employee Name',
     },
-    { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
     {
         id: 'department',
         numeric: false,
@@ -58,10 +54,40 @@ const headCells = [
     },
     { id: 'post', numeric: false, disablePadding: false, label: 'Post' },
     {
-        id: 'updatedAt',
-        numeric: false,
+        id: 'jobKnowledge',
+        numeric: true,
         disablePadding: false,
-        label: 'Modified At',
+        label: 'Job Knowledge',
+    },
+    {
+        id: 'workQuality',
+        numeric: true,
+        disablePadding: false,
+        label: 'Work Quality',
+    },
+    {
+        id: 'attendance',
+        numeric: true,
+        disablePadding: false,
+        label: 'Attendance',
+    },
+    {
+        id: 'initiative',
+        numeric: true,
+        disablePadding: false,
+        label: 'Initiative',
+    },
+    {
+        id: 'communication',
+        numeric: true,
+        disablePadding: false,
+        label: 'Communication',
+    },
+    {
+        id: 'dependibility',
+        numeric: true,
+        disablePadding: false,
+        label: 'Dependibility',
     },
 ];
 
@@ -97,9 +123,9 @@ function EnhancedTableHead(props) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                {user.role === 'admin' ? <TableCell></TableCell> : null}
-                {user.role === 'admin' ? <TableCell></TableCell> : null}
-                {user.role === 'admin' ? <TableCell></TableCell> : null}
+                {user.role === 'admin' || user.role === 'reviewer' ? (
+                    <TableCell></TableCell>
+                ) : null}
             </TableRow>
         </TableHead>
     );
@@ -116,17 +142,10 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable(props) {
-    const {
-        data,
-        user,
-        setEmployee,
-        setShowEmployeeModal,
-        setEditMode,
-        deleteExistingEmployee,
-    } = props;
+    const { data, user, setReview, setShowReviewModal } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('updatedAt');
+    const [orderBy, setOrderBy] = React.useState('department');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -146,12 +165,9 @@ export default function EnhancedTable(props) {
         setPage(0);
     };
 
-    const isSelected = (name) => selected.indexOf(name) !== -1;
-
     const handleEdit = (row) => {
-        setEmployee(row);
-        setShowEmployeeModal(true);
-        setEditMode(true);
+        setReview(row);
+        setShowReviewModal(true);
     };
 
     const emptyRows =
@@ -186,9 +202,8 @@ export default function EnhancedTable(props) {
                                     return (
                                         <TableRow
                                             hover
-                                            role="checkbox"
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row._id}
                                         >
                                             <TableCell
                                                 component="th"
@@ -196,23 +211,40 @@ export default function EnhancedTable(props) {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.employee.name}
                                             </TableCell>
                                             <TableCell align="left">
-                                                {row.email}
+                                                {row.employee.department}
                                             </TableCell>
                                             <TableCell align="left">
-                                                {row.department}
+                                                {row.employee.post}
                                             </TableCell>
-                                            <TableCell align="left">
-                                                {row.post}
+                                            <TableCell align="right">
+                                                {row.jobKnowledge * 20}
+                                                {'%'}
                                             </TableCell>
-                                            <TableCell align="left">
-                                                {moment(row.updatedAt).format(
-                                                    'YYYY-MM-DD',
-                                                )}
+                                            <TableCell align="right">
+                                                {row.workQuality * 20}
+                                                {'%'}
                                             </TableCell>
-                                            {user.role === 'admin' ? (
+                                            <TableCell align="right">
+                                                {row.attendance * 20}
+                                                {'%'}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {row.initiative * 20}
+                                                {'%'}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {row.communication * 20}
+                                                {'%'}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {row.dependibility * 20}
+                                                {'%'}
+                                            </TableCell>
+                                            {user.role === 'admin' ||
+                                            user.role === 'reviewer' ? (
                                                 <TableCell>
                                                     <IconButton
                                                         onClick={() => {
@@ -220,30 +252,6 @@ export default function EnhancedTable(props) {
                                                         }}
                                                     >
                                                         <EditIcon color="primary" />
-                                                    </IconButton>
-                                                </TableCell>
-                                            ) : null}
-                                            {user.role === 'admin' ? (
-                                                <TableCell>
-                                                    <IconButton
-                                                        onClick={() =>
-                                                            console.log('asd')
-                                                        }
-                                                    >
-                                                        <SupervisorAccountIcon color="primary" />
-                                                    </IconButton>
-                                                </TableCell>
-                                            ) : null}
-                                            {user.role === 'admin' ? (
-                                                <TableCell>
-                                                    <IconButton
-                                                        onClick={() =>
-                                                            deleteExistingEmployee(
-                                                                row._id,
-                                                            )
-                                                        }
-                                                    >
-                                                        <DeleteIcon color="primary" />
                                                     </IconButton>
                                                 </TableCell>
                                             ) : null}

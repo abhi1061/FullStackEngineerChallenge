@@ -10,20 +10,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 export default function FormDialog(props) {
     const {
         showEmployeeModal,
-        setShowEmployeeModal,
         employee,
         setEmployee,
         editMode,
-        setEditMode,
         createNewEmployee,
         editExistingEmployee,
+        handleClose,
     } = props;
-
-    const handleClose = () => {
-        setShowEmployeeModal(false);
-        setEmployee({});
-        setEditMode(false);
-    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
