@@ -43,50 +43,42 @@ const headCells = [
     {
         id: 'name',
         numeric: false,
-        disablePadding: true,
         label: 'Employee Name',
     },
     {
         id: 'department',
         numeric: false,
-        disablePadding: false,
         label: 'Department',
     },
     { id: 'post', numeric: false, disablePadding: false, label: 'Post' },
     {
         id: 'jobKnowledge',
         numeric: true,
-        disablePadding: false,
         label: 'Job Knowledge',
     },
     {
         id: 'workQuality',
         numeric: true,
-        disablePadding: false,
         label: 'Work Quality',
     },
     {
         id: 'attendance',
         numeric: true,
-        disablePadding: false,
         label: 'Attendance',
     },
     {
         id: 'initiative',
         numeric: true,
-        disablePadding: false,
         label: 'Initiative',
     },
     {
         id: 'communication',
         numeric: true,
-        disablePadding: false,
         label: 'Communication',
     },
     {
         id: 'dependibility',
         numeric: true,
-        disablePadding: false,
         label: 'Dependibility',
     },
 ];
@@ -104,7 +96,7 @@ function EnhancedTableHead(props) {
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
+                        padding='default'
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
@@ -134,7 +126,6 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -206,7 +197,7 @@ export default function EnhancedTable(props) {
                                                 component="th"
                                                 id={index}
                                                 scope="row"
-                                                padding="none"
+                                                padding="default"
                                             >
                                                 {row.employee.name}
                                             </TableCell>

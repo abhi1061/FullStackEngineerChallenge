@@ -49,18 +49,16 @@ const headCells = [
         disablePadding: true,
         label: 'Employee Name',
     },
-    { id: 'email', numeric: false, disablePadding: false, label: 'Email' },
+    { id: 'email', numeric: false,  label: 'Email' },
     {
         id: 'department',
         numeric: false,
-        disablePadding: false,
         label: 'Department',
     },
-    { id: 'post', numeric: false, disablePadding: false, label: 'Post' },
+    { id: 'post', numeric: false, label: 'Post' },
     {
         id: 'updatedAt',
         numeric: false,
-        disablePadding: false,
         label: 'Modified At',
     },
 ];
@@ -78,7 +76,7 @@ function EnhancedTableHead(props) {
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
+                        padding={'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
@@ -108,7 +106,6 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -190,7 +187,7 @@ export default function EnhancedTable(props) {
                                                 component="th"
                                                 id={index}
                                                 scope="row"
-                                                padding="none"
+                                                padding="default"
                                             >
                                                 {row.name}
                                             </TableCell>
@@ -232,7 +229,7 @@ export default function EnhancedTable(props) {
                                                                     .role ===
                                                                 'reviewer'
                                                                     ? 'primary'
-                                                                    : 'default'
+                                                                    : 'disabled'
                                                             }
                                                         />
                                                     </IconButton>
