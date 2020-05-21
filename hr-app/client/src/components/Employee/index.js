@@ -5,7 +5,12 @@ import './employee.css';
 import AddEmployeeButton from './AddEmployeeButton';
 import EmployeeModal from './EmployeeModal';
 import EmployeeTable from './EmployeeTable';
-import { listEmplyees, createEmployee, editEmployee } from '../../actions';
+import {
+    listEmplyees,
+    createEmployee,
+    editEmployee,
+    deleteEmployee,
+} from '../../actions';
 
 export default function EmployeePage(props) {
     const { user } = props;
@@ -28,12 +33,20 @@ export default function EmployeePage(props) {
     };
 
     const editExistingEmployee = async () => {
+        await editEmployee(employee._id, employee);
         const newEmployees = [...employees];
-        const response = await editEmployee(employee._id, employee);
         const index = _.findIndex(employees, ['_id', employee._id]);
-        newEmployees[index] = response;
+        newEmployees[index] = employee;
         setEmployees(newEmployees);
         setShowEmployeeModal(false);
+    };
+
+    const deleteExistingEmployee = async (id) => {
+        await deleteEmployee(id);
+        const index = _.findIndex(employees, ['_id', id]);
+        const newEmployees = [...employees];
+        newEmployees.splice(index, 1);
+        setEmployees(newEmployees);
     };
 
     return (
@@ -51,6 +64,7 @@ export default function EmployeePage(props) {
                 setEmployee={setEmployee}
                 setShowEmployeeModal={setShowEmployeeModal}
                 setEditMode={setEditMode}
+                deleteExistingEmployee={deleteExistingEmployee}
             />
             <EmployeeModal
                 showEmployeeModal={showEmployeeModal}

@@ -1,6 +1,10 @@
 const Employee = require('../model/Employee')
 const User = require('../model/User')
 
+const del = async (request) => {
+    return await deleteEmployee(request)
+}
+
 const post = async (request) => {
     return await createEmployee(request)
 }
@@ -15,7 +19,7 @@ const list = async () => {
 
 const getEmployees = async () => {
     try {
-        return await Employee.find({}).exec()
+        return await Employee.find().populate('user')
     } catch (error) {
         return {
             error: error,
@@ -35,17 +39,17 @@ const createEmployee = async (request) => {
             }
         }
 
-        if (!(await User.find({ email: request.body.email }).exec()).length) {
-            const user = new User({
-                email: request.body.email,
-                password: '1234', // TODO default password set but need password change process
-                role: 'employee',
-                accountType: 'employee',
-            })
-            await user.save()
-        }
+        const user = new User({
+            email: request.body.email,
+            password: '1234', // TODO default password set but need password change process
+            role: 'employee',
+            accountType: 'employee',
+        })
+
+        await user.save()
 
         const employee = new Employee({
+            user: user._id,
             name: request.body.name,
             email: request.body.email,
             department: request.body.department,
@@ -78,7 +82,18 @@ const updateEmployee = async (request) => {
         employee.post = request.body.post
         employee.phoneNumber = request.body.phoneNumber
         updatedAt = Date.now()
-        return await employee.save()
+        await employee.save()
+    } catch (error) {
+        return {
+            error: error,
+            status: 500,
+        }
+    }
+}
+
+const deleteEmployee = async (request) => {
+    try {
+        return await Employee.findById(request.params.id).remove().exec()
     } catch (error) {
         return {
             error: error,
@@ -90,3 +105,4 @@ const updateEmployee = async (request) => {
 exports.post = post
 exports.put = put
 exports.list = list
+exports.del = del

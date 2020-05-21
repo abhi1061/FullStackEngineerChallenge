@@ -55,4 +55,21 @@ employeeRouter.put(
     },
 )
 
+employeeRouter.delete(
+    '/:id',
+    validate(requestSchema.DELETE_EMPLOYEE),
+    (req, res) => {
+        employeeService
+            .del(req)
+            .then((result) => {
+                if (result.error) {
+                    return sendError(res, result.status, result.error)
+                }
+                sendResponse(res, 204, {})
+            })
+            .catch((error) => {
+                reportInternalError(res, 'Error deleting employee', error)
+            })
+    },
+)
 module.exports = employeeRouter

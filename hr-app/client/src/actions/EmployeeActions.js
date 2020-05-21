@@ -9,19 +9,20 @@ export const listEmplyees = async () => {
 
 export const createEmployee = async (data) => {
     const res = await axios.post(`/employee`, data);
-    if (res.status === 200) {
+    if (res.status === 201) {
         return res.data;
     }
 };
 
 export const editEmployee = async (id, { name, email, department, post }) => {
-    const res = await axios.put(`/employee/${id}`, {
+    await axios.put(`/employee/${id}`, {
         name,
         email,
         department,
         post,
     });
-    if (res.status === 200) {
-        return res.data;
-    }
+};
+
+export const deleteEmployee = async (id) => {
+    await axios.delete(`/employee/${id}`);
 };

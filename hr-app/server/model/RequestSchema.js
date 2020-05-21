@@ -16,6 +16,9 @@ const requestSchema = {
         post: Joi.string().required(),
         phoneNumber: Joi.string().optional(),
     }),
+    DELETE_EMPLOYEE: Joi.object().keys({
+        id: Joi.string().required(),
+    }),
     USER: Joi.object().keys({
         email: Joi.string().email().required(),
         password: Joi.string().required(),

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,12 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import EditIcon from '@material-ui/icons/EditOutlined';
@@ -71,16 +66,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const {
-        classes,
-        onSelectAllClick,
-        order,
-        orderBy,
-        numSelected,
-        rowCount,
-        onRequestSort,
-        user,
-    } = props;
+    const { classes, order, orderBy, onRequestSort, user } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -88,16 +74,6 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        indeterminate={
-                            numSelected > 0 && numSelected < rowCount
-                        }
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{ 'aria-label': 'select all desserts' }}
-                    />
-                </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -122,9 +98,8 @@ function EnhancedTableHead(props) {
                     </TableCell>
                 ))}
                 {user.role === 'admin' ? <TableCell></TableCell> : null}
-                {user.role === 'admin' || user.role === 'reviewer' ? (
-                    <TableCell></TableCell>
-                ) : null}
+                {user.role === 'admin' ? <TableCell></TableCell> : null}
+                {user.role === 'admin' ? <TableCell></TableCell> : null}
             </TableRow>
         </TableHead>
     );
@@ -138,61 +113,6 @@ EnhancedTableHead.propTypes = {
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
-};
-
-const useToolbarStyles = makeStyles((theme) => ({
-    root: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-    },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                  color: theme.palette.secondary.main,
-                  backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-              }
-            : {
-                  color: theme.palette.text.primary,
-                  backgroundColor: theme.palette.secondary.dark,
-              },
-    title: {
-        flex: '1 1 100%',
-    },
-}));
-
-const EnhancedTableToolbar = (props) => {
-    const classes = useToolbarStyles();
-    const { numSelected } = props;
-
-    return (
-        <Toolbar
-            className={clsx(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
-        >
-            {numSelected > 0 ? (
-                <Typography
-                    className={classes.title}
-                    color="inherit"
-                    variant="subtitle1"
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : null}
-
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : null}
-        </Toolbar>
-    );
-};
-
-EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -226,6 +146,7 @@ export default function EnhancedTable(props) {
         setEmployee,
         setShowEmployeeModal,
         setEditMode,
+        deleteExistingEmployee,
     } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
@@ -247,26 +168,6 @@ export default function EnhancedTable(props) {
             return;
         }
         setSelected([]);
-    };
-
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -292,7 +193,6 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
                     <Table
                         className={classes.table}
@@ -329,20 +229,6 @@ export default function EnhancedTable(props) {
                                             key={row.name}
                                             selected={isItemSelected}
                                         >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    checked={isItemSelected}
-                                                    onClick={(event) =>
-                                                        handleClick(
-                                                            event,
-                                                            row.name,
-                                                        )
-                                                    }
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
                                             <TableCell
                                                 component="th"
                                                 id={labelId}
@@ -384,6 +270,19 @@ export default function EnhancedTable(props) {
                                                         }
                                                     >
                                                         <SupervisorAccountIcon color="primary" />
+                                                    </IconButton>
+                                                </TableCell>
+                                            ) : null}
+                                            {user.role === 'admin' ? (
+                                                <TableCell>
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            deleteExistingEmployee(
+                                                                row._id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <DeleteIcon color="primary" />
                                                     </IconButton>
                                                 </TableCell>
                                             ) : null}
